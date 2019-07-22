@@ -1,0 +1,16 @@
+#!/bin/bash -xe
+
+#Nexus Installation
+yum update -y
+yum install -y java-1.8.0-openjdk.x86_64
+[ ! -d /app ] && mkdir -p /app
+cd /app
+wget http://download.sonatype.com/nexus/3/latest-unix.tar.gz
+latest-unix.tar.gz &&  mv nexus-3.* nexus && rm -rf sonatype-work
+adduser nexus && chown -R nexus:nexus /app/nexus
+echo "run_as_user=\"nexus\"" > /app/nexus/bin/nexus.rc
+ln -s /app/nexus/bin/nexus /etc/init.d/nexus
+chkconfig --add nexus
+chkconfig --levels 345 nexus on
+service nexus start
+
